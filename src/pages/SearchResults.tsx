@@ -438,7 +438,7 @@ export default function SearchResults() {
           signal: abortControllerRef.current.signal,
         }*/
         if (selectedModel == "lamma") { 
-        const response = await fetch('https://red-panda-v1.koyeb.app/answer', {
+        var response = await fetch('https://red-panda-v1.koyeb.app/answer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -452,7 +452,7 @@ export default function SearchResults() {
       }
       )}
       if (selectedModel == "online") { 
-        const response = await fetch('https://red-panda-v1.koyeb.app/answeron', {
+        var response = await fetch('https://red-panda-v1.koyeb.app/answeron', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -466,7 +466,7 @@ export default function SearchResults() {
       }
       )}
       if (selectedModel == "mixtral") {  
-const response = await fetch(
+var response = await fetch(
         'https://bhkkhjgkk-mixtral-46-7b-fastapi-v2-stream.hf.space/generate/',
         {
           method: 'POST',
