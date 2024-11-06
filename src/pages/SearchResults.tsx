@@ -489,7 +489,7 @@ const response = await fetch(
             system_prompt: `YOU ARE AN AI ASSISTANT NAMED SHADOW AI`,
           }),
           signal: abortControllerRef.current.signal,
-        }}
+        }) }
 
       const reader = response.body?.getReader();
       if (!reader) throw new Error('No reader available');
