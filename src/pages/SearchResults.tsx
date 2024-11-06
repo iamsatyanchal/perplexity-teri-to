@@ -437,7 +437,7 @@ export default function SearchResults() {
           }),
           signal: abortControllerRef.current.signal,
         }*/
-
+        if (selectedModel == "lamma") { 
         const response = await fetch('https://red-panda-v1.koyeb.app/answer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -450,7 +450,46 @@ export default function SearchResults() {
         }),
         signal: abortControllerRef.current.signal,
       }
-      );
+      )}
+      if (selectedModel == "online") { 
+        const response = await fetch('https://red-panda-v1.koyeb.app/answeron', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query,
+          model: 'llama-3.1-70b',
+          history: messages
+            .filter((msg) => !msg.isStreaming)
+            .map(({ role, content }) => ({ role, content })),
+        }),
+        signal: abortControllerRef.current.signal,
+      }
+      )}
+      if (selectedModel == "mixtral") {  
+const response = await fetch(
+        'https://bhkkhjgkk-mixtral-46-7b-fastapi-v2-stream.hf.space/generate/',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompt: query,
+            model: selectedModel,
+            history: messages
+              .filter((msg) => !msg.isStreaming)
+              .reduce((acc, msg, index, arr) => {
+                if (
+                  msg.role === 'user' &&
+                  arr[index + 1] &&
+                  arr[index + 1].role === 'assistant'
+                ) {
+                  acc.push([msg.content, arr[index + 1].content]);
+                }
+                return acc;
+              }, []),
+            system_prompt: `YOU ARE AN AI ASSISTANT NAMED SHADOW AI`,
+          }),
+          signal: abortControllerRef.current.signal,
+        }}
 
       const reader = response.body?.getReader();
       if (!reader) throw new Error('No reader available');
@@ -557,8 +596,8 @@ export default function SearchResults() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="mixtral">Mixtral 8x7B</SelectItem>
-                    <SelectItem value="gpt4">GPT-4</SelectItem>
-                    <SelectItem value="claude">Claude 3</SelectItem>
+                    <SelectItem value="lamma">Lamma-3.1-70b</SelectItem>
+                    <SelectItem value="online">Web Search</SelectItem>
                   </SelectContent>
                 </Select>
                 <div className="w-px h-8 bg-border" />
